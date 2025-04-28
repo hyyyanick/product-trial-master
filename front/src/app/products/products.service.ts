@@ -1,14 +1,15 @@
 import { Injectable, inject, signal } from "@angular/core";
-import { Product } from "./product.model";
+import { Product } from "../models/product.model";
 import { HttpClient } from "@angular/common/http";
 import { catchError, Observable, of, tap } from "rxjs";
+import { environment } from "environments/environment";
 
 @Injectable({
     providedIn: "root"
 }) export class ProductsService {
 
     private readonly http = inject(HttpClient);
-    private readonly path = "/api/products";
+    private readonly path = environment.baseApiUrl + "/products";
     
     private readonly _products = signal<Product[]>([]);
 
@@ -33,12 +34,12 @@ import { catchError, Observable, of, tap } from "rxjs";
     }
 
     public update(product: Product): Observable<boolean> {
-        return this.http.patch<boolean>(`${this.path}/${product.id}`, product).pipe(
+        return this.http.patch<boolean>(`${this.path}/${product._id}`, product).pipe(
             catchError(() => {
                 return of(true);
             }),
             tap(() => this._products.update(products => {
-                return products.map(p => p.id === product.id ? product : p)
+                return products.map(p => p._id === product._id ? product : p)
             })),
         );
     }
@@ -48,7 +49,7 @@ import { catchError, Observable, of, tap } from "rxjs";
             catchError(() => {
                 return of(true);
             }),
-            tap(() => this._products.update(products => products.filter(product => product.id !== productId))),
+            tap(() => this._products.update(products => products.filter(product => product._id !== productId))),
         );
     }
 }

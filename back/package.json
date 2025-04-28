@@ -6,13 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/server.ts",
-    "dev": "tsc && nodemon ."
+    "dev": "nodemon"
   },
   "author": "HU Yiyan",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "mongoose": "^8.14.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
