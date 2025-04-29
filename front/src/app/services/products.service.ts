@@ -18,6 +18,7 @@ import { environment } from "environments/environment";
     public get(): Observable<Product[]> {
         return this.http.get<Product[]>(this.path).pipe(
             catchError((error) => {
+                console.error("Error fetching products", error);
                 return this.http.get<Product[]>("assets/products.json");
             }),
             tap((products) => this._products.set(products)),

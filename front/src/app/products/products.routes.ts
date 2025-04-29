@@ -1,11 +1,10 @@
-import { inject } from "@angular/core";
-import { ActivatedRouteSnapshot, Routes } from "@angular/router";
-import { ProductListComponent } from "./product-list/product-list.component";
+import { Routes } from "@angular/router";
+import { ProductsComponent } from "./products.component";
 
 export const PRODUCTS_ROUTES: Routes = [
 	{
 		path: "list",
-		component: ProductListComponent,
+		component: ProductsComponent,
 	},
 	{ path: "**", redirectTo: "list" },
 ];

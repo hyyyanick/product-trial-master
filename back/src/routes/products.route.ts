@@ -1,12 +1,14 @@
 import { Request, Response, Router } from 'express';
 import Product from '../models/product';
+import authMiddleware from '../middlewares/auth';
 
 const router= Router();
 
 // Create a new product
-
-// TODO use a auth middleware to validate the request 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/',
+    authMiddleware.auth,
+    authMiddleware.isAdmin,
+    async (req: Request, res: Response) => {
     try {
         const product = req.body;
         const productCreated = await Product.create(product);
@@ -18,7 +20,9 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // Get all products
-router.get('/', async (req: Request, res: Response) => {
+router.get('/',
+    authMiddleware.auth,
+    async (req: Request, res: Response) => {
     try {
         const products = await Product.find();
         res.status(200).json(products);
@@ -28,7 +32,9 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // Get a product by ID
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id',
+    authMiddleware.auth,
+    async (req: Request, res: Response) => {
     try {
         const productId = req.params.id;
         const product = await Product.findById(productId);
@@ -42,7 +48,10 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // Update a product by ID
-router.patch('/:id', async (req: Request, res: Response) => {
+router.patch('/:id',
+    authMiddleware.auth,
+    authMiddleware.isAdmin,
+    async (req: Request, res: Response) => {
     try {
         const productId = req.params.id;
         const updates = req.body;
@@ -59,7 +68,10 @@ router.patch('/:id', async (req: Request, res: Response) => {
 });
 
 // Delete a product by ID
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id',
+    authMiddleware.auth,
+    authMiddleware.isAdmin,
+    async (req: Request, res: Response) => {
     try {
         const productId = req.params.id;
         const product = await Product.findById(productId);

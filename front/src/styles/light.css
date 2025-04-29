@@ -6972,3 +6972,9 @@
   .backend-deleted-row:hover{
     background-color: rgba(240,240,240,0.25) !important;
   }
+
+  .p-input-icon-right > .p-icon-wrapper,
+.p-input-icon-right > i:last-of-type {
+    right: 0.75rem;
+    color: #6b7280;
+  }
