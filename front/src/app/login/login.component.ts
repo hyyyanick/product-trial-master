@@ -27,6 +27,21 @@ export class LoginComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required])
   });
+
+  public isFieldInvalid(field: string): boolean {
+    const control: FormControl = this.loginForm.get(field) as FormControl;
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  public getErrorMessage(field: string): string {
+    const control: FormControl = this.loginForm.get(field) as FormControl;
+    if (control.hasError('required')) {
+      return 'Ce champ est obligatoire.';
+    } else if (control.hasError('email')) {
+      return 'Adresse e-mail invalide.';
+    }
+    return '';
+  }
   
   onLogin() {
     const { email, password } = this.loginForm.value;

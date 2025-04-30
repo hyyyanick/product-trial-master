@@ -13,16 +13,13 @@
             name="email"
             required
             pattern="[a-z0-9\._%\+\-]+@[a-z0-9\.\-]+\.[a-z]{2,}$"
+            [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('email')}"
           />
-          <!-- @if(email.invalid && (email.dirty || email.touched)){
+          @if(isFieldInvalid('email')) {
           <small class="block p-error">
-            @if(email.hasError('required')) {
-            <span>Email is required</span>
-            } @else if(email.hasError('pattern')) {
-            <span>Email is invalid</span>
-            }
+            {{ getErrorMessage('email') }}
           </small>
-          } -->
+          }
         </div>
         <div class="field">
           <label for="password">Password</label>
@@ -35,10 +32,13 @@
             inputStyleClass="w-full"
             styleClass="w-full"
             required
+            [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('password')}"
           />
-          <!-- @if(password.invalid && (password.dirty || password.touched)) {
-          <small class="block p-error"> Password is required </small>
-          } -->
+          @if(isFieldInvalid('password')) {
+          <small class="block p-error">
+            {{ getErrorMessage('password') }}
+          </small>
+          }
         </div>
         <p-button
           label="SIGN IN"
