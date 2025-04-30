@@ -1,7 +1,6 @@
 
-import { Component, OnInit, inject, signal } from "@angular/core";
+import { Component, input, output } from "@angular/core";
 import { Product } from "app/models/product.model";
-import { ProductsService } from "app/services/products.service";
 
 import { ButtonModule } from "primeng/button";
 import { TableModule } from 'primeng/table';
@@ -11,64 +10,30 @@ import { TagModule } from 'primeng/tag';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputNumberModule } from "primeng/inputnumber";
-import { CartService } from "app/services/cart.service";
-import { WishlistService } from "app/services/wishlist.service";
-import { MessageService } from "primeng/api";
-import { ToastModule } from "primeng/toast";
+import { getSeverity } from "app/utils/severity.util";
 
 @Component({
   selector: "app-product-list",
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
   standalone: true,
-  imports: [TableModule, RatingModule, TagModule, ButtonModule, CommonModule, FormsModule, InputNumberModule, ToastModule],
+  imports: [TableModule, RatingModule, TagModule, ButtonModule, CommonModule, FormsModule, InputNumberModule],
 })
-export class ProductListComponent implements OnInit {
-  private readonly productsService = inject(ProductsService);
-  private readonly cartService = inject(CartService);
-  private readonly wishlistService = inject(WishlistService);
-  private readonly messageService = inject(MessageService);
+export class ProductListComponent {
+  public readonly products = input.required<Product[]>();
+  public readonly addCart = output<(Product)>();
+  public readonly addWishlist = output<(Product)>();
 
-  public readonly products = this.productsService.products;
-
-  ngOnInit() {
-    this.productsService.get().subscribe();
+  public onAddCart(product: Product) {
+    this.addCart.emit(product);
   }
 
-  public addCart(product: Product) {
-    this.cartService.create(product._id).subscribe();
-  }
-
-  public addWishlist(product: Product) {
-    this.wishlistService.create(product._id).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: "success",
-          summary: "Succès",
-          detail: "Produit ajouté à la liste de souhaits"
-        });
-      },
-      error: (err) => {
-        if (err?.error?.message === "Product already in wishlist") {
-          this.messageService.add({
-            severity: "error",
-            summary: "Erreur",
-            detail: "Produit déjà dans la liste de souhaits"
-          });
-        }
-      },
-    });
+  public onAddWishlist(product: Product) {
+    this.addWishlist.emit(product);
   }
 
   public getSeverity(status: string) {
-    switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warning';
-      case 'OUTOFSTOCK':
-        return 'danger';
-    }
+    return getSeverity(status);
   }
 
   public updateQuantity(product: Product, quantity: number) {

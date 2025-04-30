@@ -1,0 +1,1 @@
+export type SEVERITY = "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined;

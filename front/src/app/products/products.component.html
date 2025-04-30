@@ -1,1 +1,4 @@
-<app-product-list></app-product-list>
+<p-toast />
+<div class="card">
+    <app-product-list [products]="products()" (addCart)="handleAddCart($event)" (addWishlist)="handleAddWishlist($event)"></app-product-list>
+</div>

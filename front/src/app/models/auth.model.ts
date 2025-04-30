@@ -5,6 +5,6 @@ export interface RegisterPostData {
     password: string;
   }
   
-  export interface User extends RegisterPostData {
-    id: string;
-  }
+export interface User extends RegisterPostData {
+  id: string;
+}
