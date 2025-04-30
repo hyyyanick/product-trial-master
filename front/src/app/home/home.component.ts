@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { RouterLink } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 
@@ -8,7 +7,7 @@ import { CardModule } from "primeng/card";
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.scss"],
   standalone: true,
-  imports: [CardModule, RouterLink, ButtonModule],
+  imports: [CardModule, ButtonModule],
 })
 export class HomeComponent {
   public readonly appTitle = "ALTEN SHOP";

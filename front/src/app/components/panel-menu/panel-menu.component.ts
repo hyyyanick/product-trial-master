@@ -1,5 +1,6 @@
 import {
     Component,
+    computed,
     inject,
     signal,
   } from "@angular/core";
@@ -12,45 +13,46 @@ import { MenuItem } from "primeng/api";
     standalone: true,
     imports: [PanelMenuModule],
     template: `
-        <p-panelMenu [model]="items" styleClass="w-full" />
+        <p-panelMenu [model]="items()" styleClass="w-full" />
     `
   })
   export class PanelMenuComponent {
     private readonly authService = inject(AuthService);
-    // public readonly isVisible = signal<boolean>(this.authService.isLoggedIn());
-
-    public readonly items: MenuItem[] = [
-        {
-            label: 'Accueil',
-            icon: 'pi pi-home',
-            routerLink: ['/home']
-        },
-        {
-            label: 'Produits',
-            icon: 'pi pi-barcode',
-            routerLink: ['/products/list'],
-            visible: this.authService.isLoggedIn()
-        },
-        {
-            label: 'Wishlist',
-            icon: 'pi pi-heart',
-            routerLink: ['/wishlist'],
-            visible: this.authService.isLoggedIn()
-        },
-        {
-            label: 'Contact',
-            icon: 'pi pi-envelope',
-            routerLink: ['/contact'],
-            visible: this.authService.isLoggedIn()
-        },
-        {
-          label: 'Logout',
-          icon: 'pi pi-sign-out',
-          command: () => {
-            this.authService.logout();
-          },
-          visible: this.authService.isLoggedIn()
-      }
-    ]
+    public readonly isLoggedIn = this.authService.isLoggedIn;
+    public readonly items = computed<MenuItem[]>(() => {
+      return [
+         {
+             label: 'Accueil',
+             icon: 'pi pi-home',
+             routerLink: ['/home']
+         },
+         {
+             label: 'Produits',
+             icon: 'pi pi-barcode',
+             routerLink: ['/products/list'],
+             visible: this.isLoggedIn()
+         },
+         {
+             label: 'Wishlist',
+             icon: 'pi pi-heart',
+             routerLink: ['/wishlist'],
+             visible: this.isLoggedIn()
+         },
+         {
+             label: 'Contact',
+             icon: 'pi pi-envelope',
+             routerLink: ['/contact'],
+             visible: this.isLoggedIn()
+         },
+         {
+           label: 'Logout',
+           icon: 'pi pi-sign-out',
+           command: () => {
+             this.authService.logout();
+           },
+           visible: this.isLoggedIn()
+       }
+     ]
+    })
   }
   

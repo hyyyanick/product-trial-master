@@ -1,7 +1,6 @@
 import {
   Component,
   inject,
-  OnInit,
 } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { SplitterModule } from 'primeng/splitter';
@@ -9,6 +8,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { PanelMenuComponent } from "./components/panel-menu/panel-menu.component";
 import { ButtonModule } from "primeng/button";
 import { CartService } from "./services/cart.service";
+import { AuthService } from "./services/auth.service";
 
 @Component({
   selector: "app-root",
@@ -17,13 +17,12 @@ import { CartService } from "./services/cart.service";
   standalone: true,
   imports: [RouterModule, SplitterModule, ToolbarModule, ButtonModule, PanelMenuComponent],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   private readonly cartService = inject(CartService);
+  private readonly authServiece = inject(AuthService);
 
+  public readonly isLoggedIn = this.authServiece.isLoggedIn;
   public readonly cartItems = this.cartService.cartItems;
 
-  ngOnInit() {
-    this.cartService.get().subscribe();
-  }
   title = "ALTEN SHOP";
 }
