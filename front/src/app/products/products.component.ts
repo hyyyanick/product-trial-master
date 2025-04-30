@@ -12,7 +12,7 @@ import { Product } from 'app/models/product.model';
   standalone: true,
   imports: [ProductListComponent, ToastModule],
   templateUrl: './products.component.html',
-  styleUrl: './products.component.css'
+  styleUrl: './products.component.scss'
 })
 export class ProductsComponent {
   private readonly productsService = inject(ProductsService);

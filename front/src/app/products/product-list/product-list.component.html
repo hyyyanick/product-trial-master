@@ -1,14 +1,23 @@
 <p-table [value]="products()"
-    [rows]="5"
+    [rows]="5" #dt2
     [rowsPerPageOptions]="[5, 10, 25]"
     [paginator]="true"
     [globalFilterFields]="['name', 'category']"
     [tableStyle]="{ 'min-width': '65rem' }">
 
-    <!-- table caption filter -->
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
-            <span class="text-xl font-bold">Liste des Produits</span>
+            <h1>Liste des produits</h1>
+            <p-iconField iconPosition="left">
+                <p-inputIcon>
+                    <i class="pi pi-search"></i>
+                </p-inputIcon>
+                <input #searchInput
+                    pInputText class="p-inputtext p-component p-element"
+                    type="text" 
+                    (input)="dt2.filterGlobal(searchInput.value, 'contains')" 
+                    placeholder="Search keyword" />
+            </p-iconField>
         </div>
     </ng-template>
 
