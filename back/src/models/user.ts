@@ -7,7 +7,10 @@ const userSchema = new Schema<User>({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   createdAt: { type: Number, default: Date.now },
-  cart: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+  cart: [{
+    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+    quantity: { type: Number, default: 1 }
+  }],
   wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
 });
 

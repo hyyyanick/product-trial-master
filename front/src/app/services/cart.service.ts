@@ -23,20 +23,24 @@ export class CartService {
 
     public create(productId: number): Observable<boolean> {
         return this.http.post<boolean>(`${this.path}/${productId}`, {}).pipe(
-            tap(() => this._cartItems.update(cartItems => [productId, ...cartItems])),
+            tap(() => this._cartItems.update(cartItems => {
+                const product = cartItems.find(cartItem => cartItem.product === productId);
+                if (product) {
+                    return [...cartItems];
+                }
+                return [{ product: productId, quantity: 1 }, ...cartItems];
+            })),
         );
     }
     public delete(productId: number): Observable<boolean> {
         return this.http.delete<boolean>(`${this.path}/${productId}`).pipe(
-            tap(() => this._cartItems.update(cartItems => cartItems.filter(cartItem => cartItem._id !== productId))),
+            tap(() => this._cartItems.update(cartItems => cartItems.filter(cartItem => cartItem.product._id !== productId))),
         );
     }
 
-    public update(product: Product): Observable<boolean> {
-        return this.http.patch<boolean>(`${this.path}/${product._id}`, product).pipe(
-            tap(() => this._cartItems.update(cartItems => {
-                return cartItems.map(p => p._id === product._id ? product : p)
-            })),
+    public update(productId: string, quantity: number): Observable<boolean> {
+        return this.http.patch<boolean>(`${this.path}/${productId}`, {quantity}).pipe(
+            tap(),
         );
     }
 }
