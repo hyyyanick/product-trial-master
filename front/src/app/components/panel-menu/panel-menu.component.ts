@@ -32,13 +32,19 @@ import { MenuItem } from "primeng/api";
             visible: this.authService.isLoggedIn()
         },
         {
+            label: 'Wishlist',
+            icon: 'pi pi-heart',
+            routerLink: ['/wishlist'],
+            visible: this.authService.isLoggedIn()
+        },
+        {
             label: 'Contact',
             icon: 'pi pi-envelope',
             routerLink: ['/contact'],
             visible: this.authService.isLoggedIn()
         },
         {
-          label: 'Se déconnecter',
+          label: 'Logout',
           icon: 'pi pi-sign-out',
           command: () => {
             this.authService.logout();

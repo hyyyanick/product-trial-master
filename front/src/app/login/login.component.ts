@@ -6,14 +6,15 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, CommonModule, CardModule, InputTextModule, PasswordModule, ButtonModule, RouterLink],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule, CardModule, InputTextModule, PasswordModule, ButtonModule, ToastModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -37,7 +38,9 @@ export class LoginComponent {
             summary: 'Success',
             detail: 'Logged in successfully',
           });
-          this.router.navigate(['home']);
+          setTimeout(() => {
+            this.router.navigate(['home']);
+          }, 1000);
         }
       },
       error: () => {

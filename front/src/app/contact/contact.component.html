@@ -1,0 +1,47 @@
+<p-toast />
+<div class="flex justify-content-center align-items-center min-h-screen">
+    <p-card header="Nous-Contactez" [style]="{ width: '800px' }">
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+        <div class="field">
+          <label for="email">Email</label>
+          <input
+            type="text"
+            pInputText
+            formControlName="email"
+            class="w-full"
+            id="email"
+            name="email"
+            required
+            pattern="[a-z0-9\._%\+\-]+@[a-z0-9\.\-]+\.[a-z]{2,}$"
+            [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('email')}"
+          />
+          @if(isFieldInvalid('email')) {
+          <small class="block p-error">
+            {{ getErrorMessage('email') }}
+          </small>
+          }
+        </div>
+        <div class="field">
+            <label for="message">Message</label>
+            <textarea
+                class="w-full"
+                id="message"
+                pInputTextarea
+                [autoResize]="true"
+                formControlName="message"
+                [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('message')}">
+            </textarea>
+          @if(isFieldInvalid('message')) {
+          <small class="block p-error">{{ getErrorMessage('message') }}</small>
+          }
+        </div>
+        <p-button
+          label="Envoyer"
+          styleClass="w-full"
+          [disabled]="contactForm.invalid"
+          type="submit"
+        ></p-button>
+      </form>
+    </p-card>
+  </div>
+  

@@ -61,7 +61,9 @@ router.post('/token', [
         token, 
         user: {
           name: user?.username,
-          email: user?.email
+          email: user?.email,
+          cart: user?.cart,
+          wishlist: user?.wishlist
         }
       });
 

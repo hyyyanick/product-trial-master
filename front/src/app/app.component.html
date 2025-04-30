@@ -5,8 +5,8 @@
     <div class="p-toolbar-group-center">
         {{ title }}
     </div>
-    <div class="p-toolbar-group-end">
-        <i class="pi pi-shopping-cart" style="font-size: 2rem"></i>
+    <div class="p-toolbar-group-end" routerLink="/cart">
+        <p-button icon="pi pi-shopping-cart" label="Cart" badge={{cartItems().length}}></p-button>
     </div>
 </p-toolbar>
 <p-splitter 

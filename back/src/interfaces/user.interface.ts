@@ -5,4 +5,6 @@ export interface User {
     email: string;
     password: string;
     createdAt: number;
+    cart: Array<any>;
+    wishlist: Array<any>;
 }

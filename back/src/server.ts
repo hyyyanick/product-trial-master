@@ -3,8 +3,10 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import 'dotenv/config';
 
-import productsRouter from './routes/products.route';
-import usersRouter from './routes/users.route';
+import productRouter from './routes/product.route';
+import userRouter from './routes/user.route';
+import cartRouter from './routes/cart.route';
+import wishlistRouter from './routes/wishlist.route';
 
 const app = express();
 app.use(cors());
@@ -23,8 +25,10 @@ const connectDB = async () => {
 };
 connectDB();
 
-app.use('/api/products', productsRouter);
-app.use('/api/users', usersRouter);
+app.use('/api/products', productRouter);
+app.use('/api/users', userRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/wishlist', wishlistRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
