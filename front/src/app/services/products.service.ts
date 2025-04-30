@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from "@angular/core";
 import { Product } from "../models/product.model";
 import { HttpClient } from "@angular/common/http";
-import { catchError, Observable, of, tap } from "rxjs";
+import { catchError, Observable, tap } from "rxjs";
 import { environment } from "environments/environment";
 
 @Injectable({
@@ -18,7 +18,6 @@ import { environment } from "environments/environment";
     public get(): Observable<Product[]> {
         return this.http.get<Product[]>(this.path).pipe(
             catchError((error) => {
-                console.error("Error fetching products", error);
                 return this.http.get<Product[]>("assets/products.json");
             }),
             tap((products) => this._products.set(products)),
@@ -27,18 +26,12 @@ import { environment } from "environments/environment";
 
     public create(product: Product): Observable<boolean> {
         return this.http.post<boolean>(this.path, product).pipe(
-            catchError(() => {
-                return of(true);
-            }),
             tap(() => this._products.update(products => [product, ...products])),
         );
     }
 
     public update(product: Product): Observable<boolean> {
         return this.http.patch<boolean>(`${this.path}/${product._id}`, product).pipe(
-            catchError(() => {
-                return of(true);
-            }),
             tap(() => this._products.update(products => {
                 return products.map(p => p._id === product._id ? product : p)
             })),
@@ -47,9 +40,6 @@ import { environment } from "environments/environment";
 
     public delete(productId: number): Observable<boolean> {
         return this.http.delete<boolean>(`${this.path}/${productId}`).pipe(
-            catchError(() => {
-                return of(true);
-            }),
             tap(() => this._products.update(products => products.filter(product => product._id !== productId))),
         );
     }

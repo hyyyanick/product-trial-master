@@ -7,6 +7,8 @@ import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
 import { ProductFormComponent } from "../product-form/product-form.component";
 import { ProductsService } from "app/services/products.service";
+import { MessageService } from "primeng/api";
+import { ToastModule } from "primeng/toast";
 
 const emptyProduct: Product = {
   _id: 0,
@@ -30,10 +32,11 @@ const emptyProduct: Product = {
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
   standalone: true,
-  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent],
+  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent, ToastModule],
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
+  private readonly messageService = inject(MessageService);
 
   public readonly products = this.productsService.products;
 
@@ -58,14 +61,35 @@ export class ProductListComponent implements OnInit {
   }
 
   public onDelete(product: Product) {
-    this.productsService.delete(product._id).subscribe();
+    this.productsService.delete(product._id).subscribe({
+      next: () => {
+        this.getMessage("success", "Product deleted successfully");
+      },
+      error: (error) => {
+        this.getMessage("error", error?.error?.message);
+      }
+    });
   }
 
   public onSave(product: Product) {
     if (this.isCreation) {
-      this.productsService.create(product).subscribe();
+      this.productsService.create(product).subscribe({
+        next: () => {
+          this.getMessage("success", "Product created successfully");
+        },
+        error: (error) => {
+          this.getMessage("error", error?.error?.message);
+        }
+      });
     } else {
-      this.productsService.update(product).subscribe();
+      this.productsService.update(product).subscribe({
+        next: () => {
+          this.getMessage("success", "Product updated successfully");
+        },
+        error: (error) => {
+          this.getMessage("error", error?.error?.message);
+        }
+      });
     }
     this.closeDialog();
   }
@@ -76,5 +100,13 @@ export class ProductListComponent implements OnInit {
 
   private closeDialog() {
     this.isDialogVisible = false;
+  }
+
+  private getMessage(type: string = "success", message: any) {
+    this.messageService.add({
+      severity: type,
+      summary: type === "success" ? "Success" : "Error",
+      detail: message,
+    });
   }
 }
