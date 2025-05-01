@@ -1,6 +1,7 @@
 import {
   Component,
-  inject,
+  computed,
+  inject
 } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { SplitterModule } from 'primeng/splitter';
@@ -24,5 +25,13 @@ export class AppComponent {
   public readonly isLoggedIn = this.authServiece.isLoggedIn;
   public readonly cartItems = this.cartService.cartItems;
 
+  public readonly cartNumState = computed(() => this.isLoggedIn() ? this.cartItems().length : 0);
+
   title = "ALTEN SHOP";
+
+  ngOnInit() {
+    if (this.isLoggedIn()) {
+      this.cartService.get().subscribe();
+    }
+  }
 }

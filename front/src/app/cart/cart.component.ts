@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CartService } from 'app/services/cart.service';
-import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { CartListComponent } from './cart-list/cart-list.component';
 import { Product } from 'app/models/product.model';
+import { CustomMessageService } from 'app/services/message.service';
 
 @Component({
   selector: 'app-cart',
@@ -15,7 +15,7 @@ import { Product } from 'app/models/product.model';
 export class CartComponent implements OnInit {
 
   private readonly cartService = inject(CartService);
-  private readonly messageService = inject(MessageService);
+  private readonly customMessageService = inject(CustomMessageService);
 
   public readonly cartItems = this.cartService.cartItems;
 
@@ -26,18 +26,10 @@ export class CartComponent implements OnInit {
   public handleRemove(cartItem: Product) {
     this.cartService.delete(cartItem._id).subscribe({
       next: () => {
-        this.messageService.add({
-          severity: "success",
-          summary: "Succès",
-          detail: "Produit supprimé du panier"
-        });
+        this.customMessageService.getSuccessMessage("Produit supprimé du panier");
       },
       error: (err) => {
-        this.messageService.add({
-          severity: "error",
-          summary: "Erreur",
-          detail: "Erreur lors de la suppression du produit du panier"
-        });
+        this.customMessageService.getErrorMessage("Erreur lors de la suppression du produit du panier");
       }
     });
   }
@@ -46,11 +38,7 @@ export class CartComponent implements OnInit {
     this.cartService.update(event.product._id, event.quantity).subscribe({
       next: () => {},
       error: (err) => {
-        this.messageService.add({
-          severity: "error",
-          summary: "Erreur",
-          detail: "Erreur lors de la mise à jour de la quantité"
-        });
+        this.customMessageService.getErrorMessage("Erreur lors de la mise à jour de la quantité");
       }
     });
   }

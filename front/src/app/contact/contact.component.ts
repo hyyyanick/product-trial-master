@@ -6,8 +6,8 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
-import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { CustomMessageService } from 'app/services/message.service';
 
 @Component({
   selector: 'app-contact',
@@ -17,7 +17,7 @@ import { ToastModule } from 'primeng/toast';
   styleUrl: './contact.component.scss'
 })
 export class ContactComponent {
-  private messageService = inject(MessageService);
+  private customMessageService = inject(CustomMessageService);
   readonly maxMessageLength: number = 300;
 
   contactForm = new FormGroup({
@@ -25,14 +25,10 @@ export class ContactComponent {
     message: new FormControl('', [Validators.required, Validators.maxLength(this.maxMessageLength)]),
   });
 
-  public async onSubmit() { 
+  public async onSubmit() {
     if (this.contactForm.valid) {
       const { email, message } = this.contactForm.value;
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Demande de contact envoyée avec succès !'
-      });
+      this.customMessageService.getSuccessMessage("Demande de contact envoyée avec succès !");
 
       // Clear form
       this.contactForm.reset();

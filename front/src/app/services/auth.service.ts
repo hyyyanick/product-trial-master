@@ -4,6 +4,7 @@ import { RegisterPostData, User } from '../models/auth.model';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
+import { CartService } from './cart.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +12,10 @@ import { Router } from '@angular/router';
 export class AuthService {
   private readonly baseUrl = environment.baseApiUrl + '/users';
   private readonly http = inject(HttpClient);
+  private readonly cartService = inject(CartService);
   private router = inject(Router);
-
   private readonly token = signal<string | null>(localStorage.getItem('token'));
+
   public readonly isLoggedIn = computed(() => !!this.token());
 
   registerUser(postData: RegisterPostData) {
@@ -26,11 +28,13 @@ export class AuthService {
         this.token.set(response.token);
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
+        this.cartService.get().subscribe();
       }));
   }
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.token.set(null);
     this.router.navigate(['/login']);
   }

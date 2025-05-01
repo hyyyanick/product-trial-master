@@ -6,11 +6,11 @@
         {{ title }}
     </div>
     <div class="p-toolbar-group-end" routerLink="/cart">
-        <p-button icon="pi pi-shopping-cart" label="Cart" badge={{cartItems().length}}></p-button>
+        <p-button icon="pi pi-shopping-cart" label="Cart" badge={{cartNumState()}}></p-button>
     </div>
 </p-toolbar>
-<p-splitter 
-    [panelSizes]="[20, 80]" 
+<p-splitter
+    [panelSizes]="[20, 80]"
     [style]="{ height: 'calc(100vh - 100px)' }">
     <ng-template pTemplate>
         <div class="w-full">
