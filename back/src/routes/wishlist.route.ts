@@ -61,12 +61,14 @@ router.delete('/:productId', authMiddleware.auth , async (req: any, res: Respons
       }
 
       if (user && Array.isArray(user.wishlist)) {
-        user.wishlist = user.wishlist.filter((id: string) => id.toString() !== productId);
-        await user.save();
+        await User.updateOne(
+          { _id: user._id },
+          { $pull: { wishlist: productId } }
+        );
       }
 
-      await user?.save();
-      res.json(user?.wishlist);
+      const updatedUser = await User.findById(req.user._id).populate('wishlist');
+      res.json(updatedUser?.wishlist);
 
     } catch (error) {
       res.status(500).json({ message: 'Server error' });

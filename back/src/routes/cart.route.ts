@@ -65,11 +65,14 @@ router.delete('/:productId', authMiddleware.auth , async (req: any, res: Respons
       }
 
       if (user && user.cart) {
-        user.cart = user.cart.filter((item) => item.product._id.toString() !== productId);
+        await User.updateOne(
+          { _id: user._id },
+          { $pull: { cart: { product: productId } } }
+        );
       }
   
-      await user?.save();
-      res.json(user?.cart);
+      const updatedUser = await User.findById(req.user._id).populate('cart.product');
+      res.json(updatedUser?.cart);
 
     } catch (error) {
       res.status(500).json({ message: 'Server error' });
@@ -96,15 +99,14 @@ router.patch('/:productId', authMiddleware.auth , async (req: any, res: Response
       }
 
       if (user && user.cart) {
-        user.cart.forEach((item) => {
-          if (item.product._id.toString() === productId) {
-            item.quantity = quantity;
-          }
-        });
+        await User.updateOne(
+          { _id: user._id, 'cart.product': productId },
+          { $set: { 'cart.$.quantity': quantity } }
+        );
       }
   
-      await user?.save();
-      res.json(user?.cart);
+      const updatedUser = await User.findById(req.user._id).populate('cart.product');
+      res.json(updatedUser?.cart);
 
     } catch (error) {
       res.status(500).json({ message: 'Server error' });
