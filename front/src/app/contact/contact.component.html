@@ -12,7 +12,6 @@
             id="email"
             name="email"
             required
-            pattern="[a-z0-9\._%\+\-]+@[a-z0-9\.\-]+\.[a-z]{2,}$"
             [ngClass]="{'ng-invalid ng-dirty': isFieldInvalid('email')}"
           />
           @if(isFieldInvalid('email')) {
@@ -44,4 +43,3 @@
       </form>
     </p-card>
   </div>
-  

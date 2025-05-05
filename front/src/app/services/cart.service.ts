@@ -45,6 +45,14 @@ export class CartService {
     }
 
     public update(productId: string, quantity: number): Observable<boolean> {
-        return this.http.patch<boolean>(`${this.path}/${productId}`, {quantity});
+      return this.http.patch<boolean>(`${this.path}/${productId}`, {quantity}).pipe(
+        tap(() => this._cartItems.update(cartItems => {
+            const cartItem = cartItems.find(item => item.product._id === productId);
+            if (cartItem) {
+                cartItem.quantity = quantity;
+            }
+            return [...cartItems];
+        })),
+    );
     }
 }
