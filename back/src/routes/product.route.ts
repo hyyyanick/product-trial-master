@@ -9,19 +9,19 @@ const router= Router();
 router.post('/',
     authMiddleware.auth,
     authMiddleware.isAdmin,
-    // [
-    //     body('code').notEmpty().withMessage('Code is required'),
-    //     body('name').notEmpty().withMessage('Name is required'),
-    //     body('description').notEmpty().withMessage('Description is required'),
-    //     body('image').notEmpty().withMessage('Image is required'),
-    //     body('category').notEmpty().withMessage('Category is required'),
-    //     body('price').isNumeric().withMessage('Price must be a number'),
-    //     body('quantity').isNumeric().withMessage('Quantity must be a number'),
-    //     body('internalReference').notEmpty().withMessage('Internal reference is required'),
-    //     body('shellId').isNumeric().withMessage('Shell ID must be a number'),
-    //     body('inventoryStatus').isIn(['INSTOCK', 'LOWSTOCK', 'OUTOFSTOCK']).withMessage('Invalid inventory status'),
-    //     body('rating').isNumeric().withMessage('Rating must be a number')
-    // ], 
+    [
+        body('code').notEmpty().withMessage('Code is required'),
+        body('name').notEmpty().withMessage('Name is required'),
+        body('description').notEmpty().withMessage('Description is required'),
+        body('image').notEmpty().withMessage('Image is required'),
+        body('category').notEmpty().withMessage('Category is required'),
+        body('price').isNumeric().withMessage('Price must be a number'),
+        body('quantity').isNumeric().withMessage('Quantity must be a number'),
+        body('internalReference').notEmpty().withMessage('Internal reference is required'),
+        body('shellId').isNumeric().withMessage('Shell ID must be a number'),
+        body('inventoryStatus').isIn(['INSTOCK', 'LOWSTOCK', 'OUTOFSTOCK']).withMessage('Invalid inventory status'),
+        body('rating').isNumeric().withMessage('Rating must be a number')
+    ], 
     async (req: Request, res: Response) => {
         try {
             const product = req.body;

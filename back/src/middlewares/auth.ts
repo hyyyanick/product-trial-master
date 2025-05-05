@@ -7,7 +7,7 @@ const auth = async (req: any, res: Response, next: NextFunction) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
     
     if (!token) {
-        throw new Error('Invalid token');
+      res.status(401).json({ message: 'Invalid token, Authentification Required' });
     }
     if (!process.env.JWT_SECRET) {
       throw new Error('JWT_SECRET is not defined in environment variables');
@@ -23,7 +23,7 @@ const auth = async (req: any, res: Response, next: NextFunction) => {
     req.user = user;
     next();
   } catch (error) {
-    res.status(401).json({ message: 'Authentification Required' });
+    res.status(401).json({ message: 'Invalid token, Authentification Required' });
   }
 };
 
